@@ -1,112 +1,105 @@
-# Plantilla de Proyecto de Ciencia de Datos
+# Sistema de deteccion de URLs spam
 
-Esta plantilla está diseñada para impulsar proyectos de ciencia de datos proporcionando una configuración básica para conexiones de base de datos, procesamiento de datos, y desarrollo de modelos de aprendizaje automático. Incluye una organización estructurada de carpetas para tus conjuntos de datos y un conjunto de paquetes de Python predefinidos necesarios para la mayoría de las tareas de ciencia de datos.
+Proyecto de NLP para clasificar automaticamente si una URL contiene spam. La solucion parte de `url_spam.csv`, transforma cada enlace en tokens utiles para aprendizaje automatico y entrena un SVM con una version base y otra optimizada mediante grid search.
+
+## Objetivo
+
+Detectar enlaces spam usando solamente la URL, sin acceder al contenido de la pagina. Este enfoque es util cuando se necesita una primera capa rapida de filtrado para emails, newsletters, formularios o sistemas de moderacion.
+
+## Flujo de trabajo
+
+1. Carga y validacion del dataset `data/raw/url_spam.csv`.
+2. Limpieza de duplicados y division estratificada en train/test.
+3. Preprocesamiento NLP especifico para URLs:
+   - segmentacion por signos de puntuacion;
+   - eliminacion de stopwords;
+   - normalizacion y lematizacion ligera;
+   - TF-IDF con unigramas y bigramas.
+4. Extraccion de variables numericas de URL:
+   - longitud;
+   - cantidad de digitos;
+   - cantidad de caracteres especiales;
+   - puntos, guiones y barras;
+   - presencia de query string;
+   - uso de HTTPS;
+   - numero aproximado de subdominios.
+5. Entrenamiento de un SVM base con parametros por defecto.
+6. Optimizacion con `GridSearchCV`.
+7. Guardado del mejor pipeline completo en `models/`.
 
 ## Estructura
 
-El proyecto está organizado de la siguiente manera:
+```text
+.
+├── data/
+│   ├── raw/url_spam.csv
+│   └── processed/
+│       ├── train.csv
+│       └── test.csv
+├── models/
+│   ├── url_spam_svm_pipeline.joblib
+│   └── url_spam_svm_metrics.json
+├── src/
+│   ├── app.py
+│   ├── explore.ipynb
+│   └── utils.py
+├── requirements.txt
+└── README.es.md
+```
 
-- **`src/app.py`** → Script principal de Python donde correrá tu proyecto.
-- **`src/explore.ipynb`** → Notebook para exploración y pruebas. Una vez finalizada la exploración, migra el código limpio a `app.py`.
-- **`src/utils.py`** → Funciones auxiliares, como conexión a bases de datos.
-- **`requirements.txt`** → Lista de paquetes de Python necesarios.
-- **`models/`** → Contendrá tus clases de modelos SQLAlchemy.
-- **`data/`** → Almacena los datasets en diferentes etapas:
-  - **`data/raw/`** → Datos sin procesar.
-  - **`data/interim/`** → Datos transformados temporalmente.
-  - **`data/processed/`** → Datos listos para análisis.
-
-
-## ⚡ Configuración Inicial en Codespaces (Recomendado)
-
-No es necesario realizar ninguna configuración manual, ya que **Codespaces se configura automáticamente** con los archivos predefinidos que ha creado la academia para ti. Simplemente sigue estos pasos:
-
-1. **Espera a que el entorno se configure automáticamente**.
-   - Todos los paquetes necesarios y la base de datos se instalarán por sí mismos.
-   - El `username` y `db_name` creados automáticamente están en el archivo **`.env`** en la raíz del proyecto.
-2. **Una vez que Codespaces esté listo, puedes comenzar a trabajar inmediatamente**.
-
-
-## 💻 Configuración en Local (Solo si no puedes usar Codespaces)
-
-**Prerrequisitos**
-
-Asegúrate de tener Python 3.11+ instalado en tu máquina. También necesitarás pip para instalar los paquetes de Python.
-
-**Instalación**
-
-Clona el repositorio del proyecto en tu máquina local.
-
-Navega hasta el directorio del proyecto e instala los paquetes de Python requeridos:
+## Instalacion
 
 ```bash
+python -m venv .venv
+.\.venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-**Crear una base de datos (si es necesario)**
-
-Crea una nueva base de datos dentro del motor Postgres personalizando y ejecutando el siguiente comando: 
+En macOS/Linux:
 
 ```bash
-$ psql -U postgres -c "DO \$\$ BEGIN 
-    CREATE USER mi_usuario WITH PASSWORD 'mi_contraseña'; 
-    CREATE DATABASE mi_base_de_datos OWNER mi_usuario; 
-END \$\$;"
-```
-Conéctate al motor Postgres para usar tu base de datos, manipular tablas y datos: 
-
-```bash
-$ psql -U mi_usuario -d mi_base_de_datos
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
 ```
 
-¡Una vez que estés dentro de PSQL podrás crear tablas, hacer consultas, insertar, actualizar o eliminar datos y mucho más!
+## Ejecucion
 
-**Variables de entorno**
-
-Crea un archivo .env en el directorio raíz del proyecto para almacenar tus variables de entorno, como tu cadena de conexión a la base de datos:
-
-```makefile
-DATABASE_URL="postgresql://<USUARIO>:<CONTRASEÑA>@<HOST>:<PUERTO>/<NOMBRE_BD>"
-
-#example
-DATABASE_URL="postgresql://mi_usuario:mi_contraseña@localhost:5432/mi_base_de_datos"
-```
-
-## Ejecutando la Aplicación
-
-Para ejecutar la aplicación, ejecuta el script app.py desde la raíz del directorio del proyecto:
+Desde la raiz del repositorio:
 
 ```bash
 python src/app.py
 ```
 
-## Añadiendo Modelos
+El script genera:
 
-Para añadir clases de modelos SQLAlchemy, crea nuevos archivos de script de Python dentro del directorio models/. Estas clases deben ser definidas de acuerdo a tu esquema de base de datos.
+- `data/processed/train.csv`
+- `data/processed/test.csv`
+- `models/url_spam_svm_pipeline.joblib`
+- `models/url_spam_svm_metrics.json`
 
-Definición del modelo de ejemplo (`models/example_model.py`):
+## Resultados
 
-```py
-from sqlalchemy.orm import DeclarativeBase
-from sqlalchemy import String
-from sqlalchemy.orm import Mapped, mapped_column
+Las metricas se guardan automaticamente en `models/url_spam_svm_metrics.json`. El archivo incluye:
 
-Base = declarative_base()
+- distribucion del dataset;
+- metricas del SVM base;
+- mejores hiperparametros del SVM optimizado;
+- accuracy, precision, recall y F1 para la clase spam;
+- matriz de confusion;
+- rutas de los artefactos generados.
 
-class ExampleModel(Base):
-    __tablename__ = 'example_table'
-    id: Mapped[int] = mapped_column(primary_key=True)
-    username: Mapped[str] = mapped_column(unique=True)
+## Uso del modelo
+
+```python
+import joblib
+import sys
+
+sys.path.append("src")
+
+model = joblib.load("models/url_spam_svm_pipeline.joblib")
+prediction = model.predict(["https://briefingday.us8.list-manage.com/unsubscribe"])
+print(bool(prediction[0]))
 ```
 
-## Trabajando con Datos
-
-Puedes colocar tus conjuntos de datos brutos en el directorio data/raw, conjuntos de datos intermedios en data/interim, y los conjuntos de datos procesados listos para el análisis en data/processed.
-
-Para procesar datos, puedes modificar el script app.py para incluir tus pasos de procesamiento de datos, utilizando pandas para la manipulación y análisis de datos.
-
-## Contribuyentes
-
-Esta plantilla fue construida como parte del [Data Science and Machine Learning Bootcamp](https://4geeksacademy.com/us/coding-bootcamps/datascience-machine-learning) de 4Geeks Academy por [Alejandro Sanchez](https://twitter.com/alesanchezr) y muchos otros contribuyentes. Descubre más sobre [los programas BootCamp de 4Geeks Academy](https://4geeksacademy.com/us/programs) aquí.
-
-Otras plantillas y recursos como este se pueden encontrar en la página de GitHub de la escuela.
+`True` significa spam y `False` significa no spam.
