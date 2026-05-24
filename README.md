@@ -1,6 +1,12 @@
 # URL Spam Detection with NLP and SVM
 
+![URL Spam Detection project banner](assets/project-banner.png)
+
+**Language / Idioma:** English | [Español](README.es.md)
+
 This project classifies URLs as spam or not spam using only the link text. It implements the complete assignment workflow: data loading, URL preprocessing, train/test split, baseline SVM, hyperparameter optimization and model persistence.
+
+**Español:** Este proyecto detecta enlaces spam usando solamente la URL. Incluye carga de datos, preprocesamiento NLP, division train/test, SVM base, optimizacion de hiperparametros y guardado del modelo final.
 
 ## What the pipeline does
 

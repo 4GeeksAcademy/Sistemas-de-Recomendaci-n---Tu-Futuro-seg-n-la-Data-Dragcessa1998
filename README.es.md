@@ -1,6 +1,12 @@
 # Sistema de deteccion de URLs spam
 
+![Banner del proyecto de deteccion de URLs spam](assets/project-banner.png)
+
+**Idioma / Language:** [English](README.md) | Español
+
 Proyecto de NLP para clasificar automaticamente si una URL contiene spam. La solucion parte de `url_spam.csv`, transforma cada enlace en tokens utiles para aprendizaje automatico y entrena un SVM con una version base y otra optimizada mediante grid search.
+
+**English:** This project detects spam links using only the URL. It includes data loading, NLP preprocessing, train/test split, baseline SVM, hyperparameter optimization and final model persistence.
 
 ## Objetivo
 
