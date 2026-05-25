@@ -15,6 +15,7 @@ Este proyecto usa el **Adult Income Dataset** para construir un modelo supervisa
 - Transformar variables categoricas con One-Hot Encoding.
 - Normalizar variables numericas.
 - Entrenar un modelo supervisado de clasificacion.
+- Explorar importancia de variables, incluyendo variables sociales como sexo, raza, relacion y pais de origen.
 - Definir y construir un sistema de recomendacion interpretativo.
 - Probar recomendaciones con perfiles simulados.
 
@@ -40,7 +41,8 @@ Este proyecto usa el **Adult Income Dataset** para construir un modelo supervisa
 7. Optimizacion con `GridSearchCV`.
 8. Construccion del recomendador hibrido.
 9. Pruebas con perfiles simulados.
-10. Guardado del modelo y resultados.
+10. Analisis de importancia de variables y visualizaciones.
+11. Guardado del modelo y resultados.
 
 ## Estructura
 
@@ -55,7 +57,12 @@ Este proyecto usa el **Adult Income Dataset** para construir un modelo supervisa
 ├── models/
 │   ├── adult_income_recommender.joblib
 │   ├── adult_income_metrics.json
+│   ├── feature_importance.json
 │   └── sample_recommendations.json
+├── reports/figures/
+│   ├── income_distribution.png
+│   ├── social_variable_importance.png
+│   └── top_feature_importance.png
 ├── src/
 │   ├── app.py
 │   ├── explore.ipynb
@@ -91,7 +98,17 @@ El script genera:
 - `data/processed/test.csv`
 - `models/adult_income_recommender.joblib`
 - `models/adult_income_metrics.json`
+- `models/feature_importance.json`
 - `models/sample_recommendations.json`
+- `reports/figures/*.png`
+
+## Hallazgos visuales
+
+El proyecto exporta graficos listos para revisar en `reports/figures/`:
+
+- distribucion de ingresos;
+- variables con mayor peso en el modelo;
+- peso agregado de variables sociales.
 
 ## Uso del recomendador
 

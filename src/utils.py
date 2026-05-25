@@ -142,6 +142,67 @@ def evaluate_classifier(y_true, y_pred, y_score) -> dict[str, Any]:
     }
 
 
+def feature_importance_report(
+    model: Pipeline,
+    categorical_features: list[str],
+    top_n: int = 20,
+) -> dict[str, Any]:
+    """Extract interpretable coefficient weights from the logistic model."""
+    preprocessor = model.named_steps["preprocessor"]
+    classifier = model.named_steps["classifier"]
+    feature_names = preprocessor.get_feature_names_out()
+    coefficients = classifier.coef_[0]
+
+    rows = []
+    grouped: dict[str, float] = {}
+    social_grouped: dict[str, float] = {}
+
+    for feature_name, coefficient in zip(feature_names, coefficients):
+        clean_name = feature_name.replace("numeric__", "").replace("categorical__", "")
+        base_feature = _base_feature_name(clean_name, categorical_features)
+        row = {
+            "feature": clean_name,
+            "base_feature": base_feature,
+            "coefficient": float(coefficient),
+            "abs_coefficient": abs(float(coefficient)),
+        }
+        rows.append(row)
+        grouped[base_feature] = grouped.get(base_feature, 0.0) + row["abs_coefficient"]
+        if base_feature in SENSITIVE_FEATURES:
+            social_grouped[base_feature] = social_grouped.get(base_feature, 0.0) + row["abs_coefficient"]
+
+    rows = sorted(rows, key=lambda item: item["abs_coefficient"], reverse=True)
+    grouped_rows = [
+        {"feature": feature, "total_abs_coefficient": float(value)}
+        for feature, value in sorted(grouped.items(), key=lambda item: item[1], reverse=True)
+    ]
+    social_rows = [
+        {"feature": feature, "total_abs_coefficient": float(value)}
+        for feature, value in sorted(social_grouped.items(), key=lambda item: item[1], reverse=True)
+    ]
+
+    return {
+        "top_positive": sorted(rows, key=lambda item: item["coefficient"], reverse=True)[:top_n],
+        "top_negative": sorted(rows, key=lambda item: item["coefficient"])[:top_n],
+        "top_overall": rows[:top_n],
+        "grouped_importance": grouped_rows,
+        "social_variable_importance": social_rows,
+        "interpretation_note": (
+            "Los coeficientes resumen asociaciones aprendidas por el modelo, no causalidad. "
+            "Las variables sociales se reportan para analisis critico y no se usan como acciones recomendadas."
+        ),
+    }
+
+
+def _base_feature_name(feature_name: str, categorical_features: list[str]) -> str:
+    if feature_name in NUMERIC_FEATURES:
+        return feature_name
+    for column in sorted(categorical_features, key=len, reverse=True):
+        if feature_name == column or feature_name.startswith(f"{column}_"):
+            return column
+    return feature_name
+
+
 def make_default_profile(training_data: pd.DataFrame, feature_columns: list[str]) -> dict[str, Any]:
     defaults: dict[str, Any] = {}
     for column in feature_columns:

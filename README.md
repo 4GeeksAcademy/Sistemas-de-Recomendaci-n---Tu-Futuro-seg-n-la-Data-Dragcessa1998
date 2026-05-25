@@ -15,6 +15,7 @@ This project uses the **Adult Income Dataset** to train a supervised classifier 
 - Transform categorical variables with One-Hot Encoding.
 - Normalize numerical variables.
 - Train a supervised classification model.
+- Explore feature importance, including social variables such as sex, race, relationship and country of origin.
 - Define and build an interpretive recommendation system.
 - Test recommendations with simulated user profiles.
 
@@ -40,7 +41,8 @@ This project uses the **Adult Income Dataset** to train a supervised classifier 
 7. Optimize it with `GridSearchCV`.
 8. Build the hybrid recommender.
 9. Test simulated user profiles.
-10. Save model and result artifacts.
+10. Analyze feature importance and export visualizations.
+11. Save model and result artifacts.
 
 ## Structure
 
@@ -55,7 +57,12 @@ This project uses the **Adult Income Dataset** to train a supervised classifier 
 ├── models/
 │   ├── adult_income_recommender.joblib
 │   ├── adult_income_metrics.json
+│   ├── feature_importance.json
 │   └── sample_recommendations.json
+├── reports/figures/
+│   ├── income_distribution.png
+│   ├── social_variable_importance.png
+│   └── top_feature_importance.png
 ├── src/
 │   ├── app.py
 │   ├── explore.ipynb
@@ -91,7 +98,17 @@ The script creates:
 - `data/processed/test.csv`
 - `models/adult_income_recommender.joblib`
 - `models/adult_income_metrics.json`
+- `models/feature_importance.json`
 - `models/sample_recommendations.json`
+- `reports/figures/*.png`
+
+## Visual Findings
+
+The project exports review-ready charts under `reports/figures/`:
+
+- income distribution;
+- highest-weighted model variables;
+- aggregate weight of social variables.
 
 ## Use the Recommender
 

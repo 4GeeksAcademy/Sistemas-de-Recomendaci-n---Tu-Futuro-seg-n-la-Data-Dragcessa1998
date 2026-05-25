@@ -1,0 +1,445 @@
+{
+  "top_positive": [
+    {
+      "feature": "capital_gain",
+      "base_feature": "capital_gain",
+      "coefficient": 2.3379352427301754,
+      "abs_coefficient": 2.3379352427301754
+    },
+    {
+      "feature": "relationship_Wife",
+      "base_feature": "relationship",
+      "coefficient": 1.3070858447103857,
+      "abs_coefficient": 1.3070858447103857
+    },
+    {
+      "feature": "marital_status_Married-civ-spouse",
+      "base_feature": "marital_status",
+      "coefficient": 1.251055209421897,
+      "abs_coefficient": 1.251055209421897
+    },
+    {
+      "feature": "marital_status_Married-AF-spouse",
+      "base_feature": "marital_status",
+      "coefficient": 0.976333074090635,
+      "abs_coefficient": 0.976333074090635
+    },
+    {
+      "feature": "occupation_Exec-managerial",
+      "base_feature": "occupation",
+      "coefficient": 0.8297588522816953,
+      "abs_coefficient": 0.8297588522816953
+    },
+    {
+      "feature": "occupation_Protective-serv",
+      "base_feature": "occupation",
+      "coefficient": 0.7273243512788533,
+      "abs_coefficient": 0.7273243512788533
+    },
+    {
+      "feature": "native_country_Italy",
+      "base_feature": "native_country",
+      "coefficient": 0.7258260996825906,
+      "abs_coefficient": 0.7258260996825906
+    },
+    {
+      "feature": "education_num",
+      "base_feature": "education_num",
+      "coefficient": 0.7074495384228192,
+      "abs_coefficient": 0.7074495384228192
+    },
+    {
+      "feature": "native_country_Cambodia",
+      "base_feature": "native_country",
+      "coefficient": 0.6928745918003599,
+      "abs_coefficient": 0.6928745918003599
+    },
+    {
+      "feature": "occupation_Prof-specialty",
+      "base_feature": "occupation",
+      "coefficient": 0.6591438643472716,
+      "abs_coefficient": 0.6591438643472716
+    },
+    {
+      "feature": "occupation_Tech-support",
+      "base_feature": "occupation",
+      "coefficient": 0.6530514199305993,
+      "abs_coefficient": 0.6530514199305993
+    },
+    {
+      "feature": "native_country_Philippines",
+      "base_feature": "native_country",
+      "coefficient": 0.5595689230496942,
+      "abs_coefficient": 0.5595689230496942
+    },
+    {
+      "feature": "workclass_Federal-gov",
+      "base_feature": "workclass",
+      "coefficient": 0.5447737529398105,
+      "abs_coefficient": 0.5447737529398105
+    },
+    {
+      "feature": "education_1st-4th",
+      "base_feature": "education",
+      "coefficient": 0.529501630702541,
+      "abs_coefficient": 0.529501630702541
+    },
+    {
+      "feature": "native_country_Yugoslavia",
+      "base_feature": "native_country",
+      "coefficient": 0.4537751191669065,
+      "abs_coefficient": 0.4537751191669065
+    },
+    {
+      "feature": "hours_per_week",
+      "base_feature": "hours_per_week",
+      "coefficient": 0.4195318528340985,
+      "abs_coefficient": 0.4195318528340985
+    },
+    {
+      "feature": "native_country_Jamaica",
+      "base_feature": "native_country",
+      "coefficient": 0.39989962381790906,
+      "abs_coefficient": 0.39989962381790906
+    },
+    {
+      "feature": "age",
+      "base_feature": "age",
+      "coefficient": 0.39879986923085764,
+      "abs_coefficient": 0.39879986923085764
+    },
+    {
+      "feature": "native_country_Germany",
+      "base_feature": "native_country",
+      "coefficient": 0.38502976092832153,
+      "abs_coefficient": 0.38502976092832153
+    },
+    {
+      "feature": "native_country_Canada",
+      "base_feature": "native_country",
+      "coefficient": 0.35705980732826825,
+      "abs_coefficient": 0.35705980732826825
+    }
+  ],
+  "top_negative": [
+    {
+      "feature": "relationship_Own-child",
+      "base_feature": "relationship",
+      "coefficient": -1.1757624612246427,
+      "abs_coefficient": 1.1757624612246427
+    },
+    {
+      "feature": "marital_status_Never-married",
+      "base_feature": "marital_status",
+      "coefficient": -1.0256947576473923,
+      "abs_coefficient": 1.0256947576473923
+    },
+    {
+      "feature": "occupation_Priv-house-serv",
+      "base_feature": "occupation",
+      "coefficient": -1.024292935522025,
+      "abs_coefficient": 1.024292935522025
+    },
+    {
+      "feature": "occupation_Farming-fishing",
+      "base_feature": "occupation",
+      "coefficient": -0.9850440844184999,
+      "abs_coefficient": 0.9850440844184999
+    },
+    {
+      "feature": "sex_Female",
+      "base_feature": "sex",
+      "coefficient": -0.8270935800081787,
+      "abs_coefficient": 0.8270935800081787
+    },
+    {
+      "feature": "occupation_Other-service",
+      "base_feature": "occupation",
+      "coefficient": -0.8252701692600262,
+      "abs_coefficient": 0.8252701692600262
+    },
+    {
+      "feature": "native_country_Columbia",
+      "base_feature": "native_country",
+      "coefficient": -0.8017054824417273,
+      "abs_coefficient": 0.8017054824417273
+    },
+    {
+      "feature": "relationship_Other-relative",
+      "base_feature": "relationship",
+      "coefficient": -0.7445968285721656,
+      "abs_coefficient": 0.7445968285721656
+    },
+    {
+      "feature": "marital_status_Separated",
+      "base_feature": "marital_status",
+      "coefficient": -0.7207653613411137,
+      "abs_coefficient": 0.7207653613411137
+    },
+    {
+      "feature": "native_country_Dominican-Republic",
+      "base_feature": "native_country",
+      "coefficient": -0.6488760835587944,
+      "abs_coefficient": 0.6488760835587944
+    },
+    {
+      "feature": "occupation_Handlers-cleaners",
+      "base_feature": "occupation",
+      "coefficient": -0.6154698656758102,
+      "abs_coefficient": 0.6154698656758102
+    },
+    {
+      "feature": "native_country_Greece",
+      "base_feature": "native_country",
+      "coefficient": -0.5595992045726916,
+      "abs_coefficient": 0.5595992045726916
+    },
+    {
+      "feature": "workclass_Without-pay",
+      "base_feature": "workclass",
+      "coefficient": -0.5514806222388399,
+      "abs_coefficient": 0.5514806222388399
+    },
+    {
+      "feature": "race_Amer-Indian-Eskimo",
+      "base_feature": "race",
+      "coefficient": -0.5229368139442544,
+      "abs_coefficient": 0.5229368139442544
+    },
+    {
+      "feature": "marital_status_Divorced",
+      "base_feature": "marital_status",
+      "coefficient": -0.5216294010661912,
+      "abs_coefficient": 0.5216294010661912
+    },
+    {
+      "feature": "marital_status_Married-spouse-absent",
+      "base_feature": "marital_status",
+      "coefficient": -0.46022602361372694,
+      "abs_coefficient": 0.46022602361372694
+    },
+    {
+      "feature": "native_country_Mexico",
+      "base_feature": "native_country",
+      "coefficient": -0.4565483921478857,
+      "abs_coefficient": 0.4565483921478857
+    },
+    {
+      "feature": "native_country_Peru",
+      "base_feature": "native_country",
+      "coefficient": -0.4539489780833543,
+      "abs_coefficient": 0.4539489780833543
+    },
+    {
+      "feature": "native_country_Laos",
+      "base_feature": "native_country",
+      "coefficient": -0.4466849617233002,
+      "abs_coefficient": 0.4466849617233002
+    },
+    {
+      "feature": "education_Assoc-acdm",
+      "base_feature": "education",
+      "coefficient": -0.43231682207432964,
+      "abs_coefficient": 0.43231682207432964
+    }
+  ],
+  "top_overall": [
+    {
+      "feature": "capital_gain",
+      "base_feature": "capital_gain",
+      "coefficient": 2.3379352427301754,
+      "abs_coefficient": 2.3379352427301754
+    },
+    {
+      "feature": "relationship_Wife",
+      "base_feature": "relationship",
+      "coefficient": 1.3070858447103857,
+      "abs_coefficient": 1.3070858447103857
+    },
+    {
+      "feature": "marital_status_Married-civ-spouse",
+      "base_feature": "marital_status",
+      "coefficient": 1.251055209421897,
+      "abs_coefficient": 1.251055209421897
+    },
+    {
+      "feature": "relationship_Own-child",
+      "base_feature": "relationship",
+      "coefficient": -1.1757624612246427,
+      "abs_coefficient": 1.1757624612246427
+    },
+    {
+      "feature": "marital_status_Never-married",
+      "base_feature": "marital_status",
+      "coefficient": -1.0256947576473923,
+      "abs_coefficient": 1.0256947576473923
+    },
+    {
+      "feature": "occupation_Priv-house-serv",
+      "base_feature": "occupation",
+      "coefficient": -1.024292935522025,
+      "abs_coefficient": 1.024292935522025
+    },
+    {
+      "feature": "occupation_Farming-fishing",
+      "base_feature": "occupation",
+      "coefficient": -0.9850440844184999,
+      "abs_coefficient": 0.9850440844184999
+    },
+    {
+      "feature": "marital_status_Married-AF-spouse",
+      "base_feature": "marital_status",
+      "coefficient": 0.976333074090635,
+      "abs_coefficient": 0.976333074090635
+    },
+    {
+      "feature": "occupation_Exec-managerial",
+      "base_feature": "occupation",
+      "coefficient": 0.8297588522816953,
+      "abs_coefficient": 0.8297588522816953
+    },
+    {
+      "feature": "sex_Female",
+      "base_feature": "sex",
+      "coefficient": -0.8270935800081787,
+      "abs_coefficient": 0.8270935800081787
+    },
+    {
+      "feature": "occupation_Other-service",
+      "base_feature": "occupation",
+      "coefficient": -0.8252701692600262,
+      "abs_coefficient": 0.8252701692600262
+    },
+    {
+      "feature": "native_country_Columbia",
+      "base_feature": "native_country",
+      "coefficient": -0.8017054824417273,
+      "abs_coefficient": 0.8017054824417273
+    },
+    {
+      "feature": "relationship_Other-relative",
+      "base_feature": "relationship",
+      "coefficient": -0.7445968285721656,
+      "abs_coefficient": 0.7445968285721656
+    },
+    {
+      "feature": "occupation_Protective-serv",
+      "base_feature": "occupation",
+      "coefficient": 0.7273243512788533,
+      "abs_coefficient": 0.7273243512788533
+    },
+    {
+      "feature": "native_country_Italy",
+      "base_feature": "native_country",
+      "coefficient": 0.7258260996825906,
+      "abs_coefficient": 0.7258260996825906
+    },
+    {
+      "feature": "marital_status_Separated",
+      "base_feature": "marital_status",
+      "coefficient": -0.7207653613411137,
+      "abs_coefficient": 0.7207653613411137
+    },
+    {
+      "feature": "education_num",
+      "base_feature": "education_num",
+      "coefficient": 0.7074495384228192,
+      "abs_coefficient": 0.7074495384228192
+    },
+    {
+      "feature": "native_country_Cambodia",
+      "base_feature": "native_country",
+      "coefficient": 0.6928745918003599,
+      "abs_coefficient": 0.6928745918003599
+    },
+    {
+      "feature": "occupation_Prof-specialty",
+      "base_feature": "occupation",
+      "coefficient": 0.6591438643472716,
+      "abs_coefficient": 0.6591438643472716
+    },
+    {
+      "feature": "occupation_Tech-support",
+      "base_feature": "occupation",
+      "coefficient": 0.6530514199305993,
+      "abs_coefficient": 0.6530514199305993
+    }
+  ],
+  "grouped_importance": [
+    {
+      "feature": "native_country",
+      "total_abs_coefficient": 12.851591442204988
+    },
+    {
+      "feature": "occupation",
+      "total_abs_coefficient": 7.616496821501759
+    },
+    {
+      "feature": "marital_status",
+      "total_abs_coefficient": 5.305076563016396
+    },
+    {
+      "feature": "relationship",
+      "total_abs_coefficient": 3.5461531142651035
+    },
+    {
+      "feature": "education",
+      "total_abs_coefficient": 3.170599483713167
+    },
+    {
+      "feature": "workclass",
+      "total_abs_coefficient": 2.4056627138028768
+    },
+    {
+      "feature": "capital_gain",
+      "total_abs_coefficient": 2.3379352427301754
+    },
+    {
+      "feature": "race",
+      "total_abs_coefficient": 1.085328276720761
+    },
+    {
+      "feature": "sex",
+      "total_abs_coefficient": 0.8502999959898865
+    },
+    {
+      "feature": "education_num",
+      "total_abs_coefficient": 0.7074495384228192
+    },
+    {
+      "feature": "hours_per_week",
+      "total_abs_coefficient": 0.4195318528340985
+    },
+    {
+      "feature": "age",
+      "total_abs_coefficient": 0.39879986923085764
+    },
+    {
+      "feature": "capital_loss",
+      "total_abs_coefficient": 0.2691795240538705
+    },
+    {
+      "feature": "fnlwgt",
+      "total_abs_coefficient": 0.06902606830911809
+    }
+  ],
+  "social_variable_importance": [
+    {
+      "feature": "native_country",
+      "total_abs_coefficient": 12.851591442204988
+    },
+    {
+      "feature": "relationship",
+      "total_abs_coefficient": 3.5461531142651035
+    },
+    {
+      "feature": "race",
+      "total_abs_coefficient": 1.085328276720761
+    },
+    {
+      "feature": "sex",
+      "total_abs_coefficient": 0.8502999959898865
+    }
+  ],
+  "interpretation_note": "Los coeficientes resumen asociaciones aprendidas por el modelo, no causalidad. Las variables sociales se reportan para analisis critico y no se usan como acciones recomendadas."
+}

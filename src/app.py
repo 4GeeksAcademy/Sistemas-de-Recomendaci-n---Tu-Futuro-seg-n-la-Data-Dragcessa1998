@@ -3,7 +3,9 @@ from __future__ import annotations
 from pathlib import Path
 
 import joblib
+import matplotlib.pyplot as plt
 import pandas as pd
+import seaborn as sns
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import GridSearchCV, train_test_split
 from sklearn.pipeline import Pipeline
@@ -13,6 +15,7 @@ from utils import (
     IncomeRecommendationSystem,
     build_preprocessor,
     evaluate_classifier,
+    feature_importance_report,
     get_categorical_features,
     get_feature_columns,
     load_adult_income_dataset,
@@ -28,6 +31,8 @@ MODEL_DIR = PROJECT_ROOT / "models"
 MODEL_PATH = MODEL_DIR / "adult_income_recommender.joblib"
 METRICS_PATH = MODEL_DIR / "adult_income_metrics.json"
 RECOMMENDATIONS_PATH = MODEL_DIR / "sample_recommendations.json"
+FEATURE_IMPORTANCE_PATH = MODEL_DIR / "feature_importance.json"
+FIGURES_DIR = PROJECT_ROOT / "reports" / "figures"
 RANDOM_STATE = 42
 
 
@@ -91,6 +96,7 @@ def train_model_and_recommender() -> dict:
     optimized_pred = best_model.predict(X_test)
     optimized_score = best_model.predict_proba(X_test)[:, 1]
     optimized_metrics = evaluate_classifier(y_test, optimized_pred, optimized_score)
+    importance = feature_importance_report(best_model, categorical_features)
 
     recommender = IncomeRecommendationSystem(
         model=best_model,
@@ -138,14 +144,60 @@ def train_model_and_recommender() -> dict:
             "model_path": str(MODEL_PATH.relative_to(PROJECT_ROOT)),
             "metrics_path": str(METRICS_PATH.relative_to(PROJECT_ROOT)),
             "recommendations_path": str(RECOMMENDATIONS_PATH.relative_to(PROJECT_ROOT)),
+            "feature_importance_path": str(FEATURE_IMPORTANCE_PATH.relative_to(PROJECT_ROOT)),
             "train_path": str((PROCESSED_DIR / "train.csv").relative_to(PROJECT_ROOT)),
             "test_path": str((PROCESSED_DIR / "test.csv").relative_to(PROJECT_ROOT)),
+            "figures_dir": str(FIGURES_DIR.relative_to(PROJECT_ROOT)),
         },
     }
 
     write_json(results, METRICS_PATH)
     write_json(sample_recommendations, RECOMMENDATIONS_PATH)
+    write_json(importance, FEATURE_IMPORTANCE_PATH)
+    create_visualizations(df, importance)
     return results
+
+
+def create_visualizations(df: pd.DataFrame, importance: dict) -> None:
+    FIGURES_DIR.mkdir(parents=True, exist_ok=True)
+    sns.set_theme(style="whitegrid", context="talk")
+
+    distribution = (
+        df["income_high"]
+        .map({False: "<=50K", True: ">50K"})
+        .value_counts()
+        .rename_axis("income")
+        .reset_index(name="count")
+    )
+    plt.figure(figsize=(8, 5))
+    sns.barplot(data=distribution, x="income", y="count", hue="income", palette=["#4d5f85", "#d05a3f"], legend=False)
+    plt.title("Distribucion de ingresos")
+    plt.xlabel("Ingreso anual")
+    plt.ylabel("Personas")
+    plt.tight_layout()
+    plt.savefig(FIGURES_DIR / "income_distribution.png", dpi=160)
+    plt.close()
+
+    grouped = pd.DataFrame(importance["grouped_importance"]).head(12)
+    plt.figure(figsize=(10, 7))
+    sns.barplot(data=grouped, y="feature", x="total_abs_coefficient", color="#4d5f85")
+    plt.title("Variables con mayor peso en el modelo")
+    plt.xlabel("Suma de coeficientes absolutos")
+    plt.ylabel("Variable")
+    plt.tight_layout()
+    plt.savefig(FIGURES_DIR / "top_feature_importance.png", dpi=160)
+    plt.close()
+
+    social = pd.DataFrame(importance["social_variable_importance"])
+    if not social.empty:
+        plt.figure(figsize=(8, 5))
+        sns.barplot(data=social, y="feature", x="total_abs_coefficient", color="#d05a3f")
+        plt.title("Peso de variables sociales")
+        plt.xlabel("Suma de coeficientes absolutos")
+        plt.ylabel("Variable social")
+        plt.tight_layout()
+        plt.savefig(FIGURES_DIR / "social_variable_importance.png", dpi=160)
+        plt.close()
 
 
 def main() -> None:
@@ -167,6 +219,7 @@ def main() -> None:
     print(f"Saved model and recommender: {MODEL_PATH.relative_to(PROJECT_ROOT)}")
     print(f"Saved metrics: {METRICS_PATH.relative_to(PROJECT_ROOT)}")
     print(f"Saved sample recommendations: {RECOMMENDATIONS_PATH.relative_to(PROJECT_ROOT)}")
+    print(f"Saved feature importance: {FEATURE_IMPORTANCE_PATH.relative_to(PROJECT_ROOT)}")
 
 
 if __name__ == "__main__":

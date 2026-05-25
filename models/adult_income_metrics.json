@@ -125,7 +125,9 @@
     "model_path": "models\\adult_income_recommender.joblib",
     "metrics_path": "models\\adult_income_metrics.json",
     "recommendations_path": "models\\sample_recommendations.json",
+    "feature_importance_path": "models\\feature_importance.json",
     "train_path": "data\\processed\\train.csv",
-    "test_path": "data\\processed\\test.csv"
+    "test_path": "data\\processed\\test.csv",
+    "figures_dir": "reports\\figures"
   }
 }
