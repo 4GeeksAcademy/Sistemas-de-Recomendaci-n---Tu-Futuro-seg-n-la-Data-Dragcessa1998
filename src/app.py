@@ -87,8 +87,8 @@ def train_model_and_recommender() -> dict:
         },
         scoring="roc_auc",
         cv=5,
-        n_jobs=-1,
-        verbose=1,
+        n_jobs=1,
+        verbose=0,
     )
     search.fit(X_train, y_train)
 
