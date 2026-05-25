@@ -1,0 +1,131 @@
+{
+  "problem_definition": {
+    "what_is_recommended": "Trayectorias accionables de educacion, ocupacion, tipo de trabajo y horas semanales.",
+    "user_definition": "Una persona adulta representada por su perfil demografico y socioeconomico.",
+    "profile_variables": [
+      "age",
+      "fnlwgt",
+      "education_num",
+      "capital_gain",
+      "capital_loss",
+      "hours_per_week",
+      "workclass",
+      "education",
+      "marital_status",
+      "occupation",
+      "relationship",
+      "race",
+      "sex",
+      "native_country"
+    ],
+    "approach": "Sistema hibrido: clasificador supervisado para estimar probabilidad de >50K y vecinos similares de alto ingreso para filtrado basado en contenido."
+  },
+  "dataset": {
+    "rows_after_cleaning": 32537,
+    "columns": 16,
+    "high_income": 7839,
+    "low_income": 24698,
+    "train_rows": 26029,
+    "test_rows": 6508
+  },
+  "baseline_classifier": {
+    "accuracy": 0.8517209588199139,
+    "precision_high_income": 0.7364705882352941,
+    "recall_high_income": 0.5988520408163265,
+    "f1_high_income": 0.6605698206120295,
+    "roc_auc": 0.9020009243575973,
+    "confusion_matrix": [
+      [
+        4604,
+        336
+      ],
+      [
+        629,
+        939
+      ]
+    ],
+    "classification_report": {
+      "<=50K": {
+        "precision": 0.8798012612268298,
+        "recall": 0.9319838056680162,
+        "f1-score": 0.9051410596677479,
+        "support": 4940.0
+      },
+      ">50K": {
+        "precision": 0.7364705882352941,
+        "recall": 0.5988520408163265,
+        "f1-score": 0.6605698206120295,
+        "support": 1568.0
+      },
+      "accuracy": 0.8517209588199139,
+      "macro avg": {
+        "precision": 0.808135924731062,
+        "recall": 0.7654179232421714,
+        "f1-score": 0.7828554401398887,
+        "support": 6508.0
+      },
+      "weighted avg": {
+        "precision": 0.8452679952079718,
+        "recall": 0.8517209588199139,
+        "f1-score": 0.8462154753347169,
+        "support": 6508.0
+      }
+    }
+  },
+  "optimized_classifier": {
+    "best_params": {
+      "classifier__C": 0.3,
+      "classifier__class_weight": "balanced"
+    },
+    "best_cv_roc_auc": 0.9077485579322613,
+    "accuracy": 0.8085433312845728,
+    "precision_high_income": 0.570738137082601,
+    "recall_high_income": 0.8284438775510204,
+    "f1_high_income": 0.6758584807492196,
+    "roc_auc": 0.90225796290176,
+    "confusion_matrix": [
+      [
+        3963,
+        977
+      ],
+      [
+        269,
+        1299
+      ]
+    ],
+    "classification_report": {
+      "<=50K": {
+        "precision": 0.9364366729678639,
+        "recall": 0.8022267206477732,
+        "f1-score": 0.8641517662450937,
+        "support": 4940.0
+      },
+      ">50K": {
+        "precision": 0.570738137082601,
+        "recall": 0.8284438775510204,
+        "f1-score": 0.6758584807492196,
+        "support": 1568.0
+      },
+      "accuracy": 0.8085433312845728,
+      "macro avg": {
+        "precision": 0.7535874050252325,
+        "recall": 0.8153352990993968,
+        "f1-score": 0.7700051234971567,
+        "support": 6508.0
+      },
+      "weighted avg": {
+        "precision": 0.8483273760612733,
+        "recall": 0.8085433312845728,
+        "f1-score": 0.8187854675884356,
+        "support": 6508.0
+      }
+    }
+  },
+  "artifacts": {
+    "model_path": "models\\adult_income_recommender.joblib",
+    "metrics_path": "models\\adult_income_metrics.json",
+    "recommendations_path": "models\\sample_recommendations.json",
+    "train_path": "data\\processed\\train.csv",
+    "test_path": "data\\processed\\test.csv"
+  }
+}

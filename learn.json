@@ -1,15 +1,15 @@
 {
   "title": {
-    "en": "Machine Learning Python Template",
-    "es": "Plantilla para Aprendizaje de Máquina con Python"
+    "en": "Recommendation Systems - Your Future Through Data",
+    "es": "Sistemas de Recomendacion - Tu Futuro segun la Data"
   },
   "description": {
-    "us": "A standardized, but flexible project structure for doing and sharing data science and machine learning work.",
-    "es": "Una estructura de proyecto estandarizada, pero flexible, para realizar y compartir trabajos de ciencia de datos y aprendizaje de máquina."
+    "en": "Adult Income supervised classification project with an interpretive recommendation system for education and career paths.",
+    "es": "Proyecto de clasificacion supervisada con Adult Income y un sistema de recomendacion interpretativo para trayectorias educativas y laborales."
   },
-  "repository": "https://github.com/4GeeksAcademy/machine-learning-python-template",
-  "preview": "https://github.com/4GeeksAcademy/machine-learning-python-template/blob/main/preview.jpg?raw=true",
-  "projectType": "template",
-  "difficulty": "beginner",
-  "technologies": ["Python", "Machine-Learning", "Datascience", "ai-engineering"]
+  "repository": "https://github.com/4GeeksAcademy/Sistemas-de-Recomendaci-n---Tu-Futuro-seg-n-la-Data-Dragcessa1998",
+  "preview": "assets/project-banner.png",
+  "projectType": "project",
+  "difficulty": "intermediate",
+  "technologies": ["Python", "Machine-Learning", "Recommender-Systems", "Data-Science"]
 }

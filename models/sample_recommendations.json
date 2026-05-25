@@ -1,0 +1,273 @@
+{
+  "young_part_time_hs": {
+    "base_probability": 0.0175,
+    "recommendations": [
+      {
+        "recommendation": "Avanzar a Doctorate",
+        "estimated_probability": 0.1428,
+        "probability_uplift": 0.1253,
+        "changes": {
+          "education_num": 16,
+          "education": "Doctorate"
+        },
+        "rationale": "La educacion suele aumentar el acceso a ocupaciones mejor remuneradas."
+      },
+      {
+        "recommendation": "Avanzar a Prof-school",
+        "estimated_probability": 0.119,
+        "probability_uplift": 0.1015,
+        "changes": {
+          "education_num": 15,
+          "education": "Prof-school"
+        },
+        "rationale": "La educacion suele aumentar el acceso a ocupaciones mejor remuneradas."
+      },
+      {
+        "recommendation": "Avanzar a Masters",
+        "estimated_probability": 0.0699,
+        "probability_uplift": 0.0524,
+        "changes": {
+          "education_num": 14,
+          "education": "Masters"
+        },
+        "rationale": "La educacion suele aumentar el acceso a ocupaciones mejor remuneradas."
+      },
+      {
+        "recommendation": "Avanzar a Bachelors",
+        "estimated_probability": 0.0529,
+        "probability_uplift": 0.0354,
+        "changes": {
+          "education_num": 13,
+          "education": "Bachelors"
+        },
+        "rationale": "La educacion suele aumentar el acceso a ocupaciones mejor remuneradas."
+      },
+      {
+        "recommendation": "Aumentar disponibilidad a 50 horas semanales",
+        "estimated_probability": 0.0402,
+        "probability_uplift": 0.0226,
+        "changes": {
+          "hours_per_week": 50
+        },
+        "rationale": "El modelo evalua si una mayor disponibilidad laboral mejora la probabilidad estimada."
+      }
+    ],
+    "similar_successful_profiles": [
+      {
+        "similarity": 0.7897,
+        "education": "HS-grad",
+        "occupation": "Adm-clerical",
+        "workclass": "Private",
+        "hours_per_week": 20
+      },
+      {
+        "similarity": 0.7678,
+        "education": "HS-grad",
+        "occupation": "Adm-clerical",
+        "workclass": "Private",
+        "hours_per_week": 40
+      },
+      {
+        "similarity": 0.7357,
+        "education": "HS-grad",
+        "occupation": "Adm-clerical",
+        "workclass": "Private",
+        "hours_per_week": 40
+      },
+      {
+        "similarity": 0.7238,
+        "education": "HS-grad",
+        "occupation": "Adm-clerical",
+        "workclass": "Private",
+        "hours_per_week": 25
+      },
+      {
+        "similarity": 0.7205,
+        "education": "HS-grad",
+        "occupation": "Adm-clerical",
+        "workclass": "Private",
+        "hours_per_week": 35
+      }
+    ]
+  },
+  "mid_career_college_sales": {
+    "base_probability": 0.6229,
+    "recommendations": [
+      {
+        "recommendation": "Avanzar a Doctorate",
+        "estimated_probability": 0.9134,
+        "probability_uplift": 0.2905,
+        "changes": {
+          "education_num": 16,
+          "education": "Doctorate"
+        },
+        "rationale": "La educacion suele aumentar el acceso a ocupaciones mejor remuneradas."
+      },
+      {
+        "recommendation": "Avanzar a Prof-school",
+        "estimated_probability": 0.8954,
+        "probability_uplift": 0.2725,
+        "changes": {
+          "education_num": 15,
+          "education": "Prof-school"
+        },
+        "rationale": "La educacion suele aumentar el acceso a ocupaciones mejor remuneradas."
+      },
+      {
+        "recommendation": "Avanzar a Masters",
+        "estimated_probability": 0.8264,
+        "probability_uplift": 0.2035,
+        "changes": {
+          "education_num": 14,
+          "education": "Masters"
+        },
+        "rationale": "La educacion suele aumentar el acceso a ocupaciones mejor remuneradas."
+      },
+      {
+        "recommendation": "Avanzar a Bachelors",
+        "estimated_probability": 0.7795,
+        "probability_uplift": 0.1566,
+        "changes": {
+          "education_num": 13,
+          "education": "Bachelors"
+        },
+        "rationale": "La educacion suele aumentar el acceso a ocupaciones mejor remuneradas."
+      },
+      {
+        "recommendation": "Orientar trayectoria hacia Exec-managerial",
+        "estimated_probability": 0.7315,
+        "probability_uplift": 0.1086,
+        "changes": {
+          "occupation": "Exec-managerial"
+        },
+        "rationale": "Se simula una transicion hacia una ocupacion asociada a mayor ingreso en el dataset."
+      }
+    ],
+    "similar_successful_profiles": [
+      {
+        "similarity": 0.9968,
+        "education": "Some-college",
+        "occupation": "Sales",
+        "workclass": "Private",
+        "hours_per_week": 40
+      },
+      {
+        "similarity": 0.9957,
+        "education": "Some-college",
+        "occupation": "Sales",
+        "workclass": "Private",
+        "hours_per_week": 40
+      },
+      {
+        "similarity": 0.9947,
+        "education": "Some-college",
+        "occupation": "Sales",
+        "workclass": "Private",
+        "hours_per_week": 40
+      },
+      {
+        "similarity": 0.9938,
+        "education": "Some-college",
+        "occupation": "Sales",
+        "workclass": "Private",
+        "hours_per_week": 40
+      },
+      {
+        "similarity": 0.9901,
+        "education": "Some-college",
+        "occupation": "Sales",
+        "workclass": "Private",
+        "hours_per_week": 38
+      }
+    ]
+  },
+  "adult_service_worker": {
+    "base_probability": 0.0194,
+    "recommendations": [
+      {
+        "recommendation": "Avanzar a Doctorate",
+        "estimated_probability": 0.156,
+        "probability_uplift": 0.1366,
+        "changes": {
+          "education_num": 16,
+          "education": "Doctorate"
+        },
+        "rationale": "La educacion suele aumentar el acceso a ocupaciones mejor remuneradas."
+      },
+      {
+        "recommendation": "Avanzar a Prof-school",
+        "estimated_probability": 0.1304,
+        "probability_uplift": 0.111,
+        "changes": {
+          "education_num": 15,
+          "education": "Prof-school"
+        },
+        "rationale": "La educacion suele aumentar el acceso a ocupaciones mejor remuneradas."
+      },
+      {
+        "recommendation": "Orientar trayectoria hacia Exec-managerial",
+        "estimated_probability": 0.0938,
+        "probability_uplift": 0.0744,
+        "changes": {
+          "occupation": "Exec-managerial"
+        },
+        "rationale": "Se simula una transicion hacia una ocupacion asociada a mayor ingreso en el dataset."
+      },
+      {
+        "recommendation": "Orientar trayectoria hacia Prof-specialty",
+        "estimated_probability": 0.0803,
+        "probability_uplift": 0.0609,
+        "changes": {
+          "occupation": "Prof-specialty"
+        },
+        "rationale": "Se simula una transicion hacia una ocupacion asociada a mayor ingreso en el dataset."
+      },
+      {
+        "recommendation": "Orientar trayectoria hacia Tech-support",
+        "estimated_probability": 0.0798,
+        "probability_uplift": 0.0604,
+        "changes": {
+          "occupation": "Tech-support"
+        },
+        "rationale": "Se simula una transicion hacia una ocupacion asociada a mayor ingreso en el dataset."
+      }
+    ],
+    "similar_successful_profiles": [
+      {
+        "similarity": 0.7556,
+        "education": "HS-grad",
+        "occupation": "Other-service",
+        "workclass": "Private",
+        "hours_per_week": 40
+      },
+      {
+        "similarity": 0.7446,
+        "education": "HS-grad",
+        "occupation": "Prof-specialty",
+        "workclass": "Private",
+        "hours_per_week": 40
+      },
+      {
+        "similarity": 0.7046,
+        "education": "HS-grad",
+        "occupation": "Exec-managerial",
+        "workclass": "Private",
+        "hours_per_week": 40
+      },
+      {
+        "similarity": 0.7041,
+        "education": "HS-grad",
+        "occupation": "Adm-clerical",
+        "workclass": "Private",
+        "hours_per_week": 24
+      },
+      {
+        "similarity": 0.6993,
+        "education": "HS-grad",
+        "occupation": "Craft-repair",
+        "workclass": "Private",
+        "hours_per_week": 48
+      }
+    ]
+  }
+}

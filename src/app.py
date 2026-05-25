@@ -4,156 +4,169 @@ from pathlib import Path
 
 import joblib
 import pandas as pd
-from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import GridSearchCV, train_test_split
-from sklearn.pipeline import FeatureUnion, Pipeline
-from sklearn.preprocessing import StandardScaler
-from sklearn.svm import SVC
+from sklearn.pipeline import Pipeline
 
 from utils import (
-    UrlStatsTransformer,
-    classification_metrics,
-    load_url_spam_dataset,
-    tokenize_url,
+    TARGET,
+    IncomeRecommendationSystem,
+    build_preprocessor,
+    evaluate_classifier,
+    get_categorical_features,
+    get_feature_columns,
+    load_adult_income_dataset,
+    simulated_profiles,
     write_json,
 )
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
-RAW_DATA_PATH = PROJECT_ROOT / "data" / "raw" / "url_spam.csv"
+RAW_DATA_PATH = PROJECT_ROOT / "data" / "raw" / "adult-census-income.csv"
 PROCESSED_DIR = PROJECT_ROOT / "data" / "processed"
 MODEL_DIR = PROJECT_ROOT / "models"
-MODEL_PATH = MODEL_DIR / "url_spam_svm_pipeline.joblib"
-METRICS_PATH = MODEL_DIR / "url_spam_svm_metrics.json"
+MODEL_PATH = MODEL_DIR / "adult_income_recommender.joblib"
+METRICS_PATH = MODEL_DIR / "adult_income_metrics.json"
+RECOMMENDATIONS_PATH = MODEL_DIR / "sample_recommendations.json"
 RANDOM_STATE = 42
 
 
-def build_svm_pipeline() -> Pipeline:
-    features = FeatureUnion(
-        [
-            (
-                "tfidf",
-                TfidfVectorizer(
-                    tokenizer=tokenize_url,
-                    token_pattern=None,
-                    lowercase=True,
-                    ngram_range=(1, 2),
-                    min_df=2,
-                    max_features=6000,
-                ),
-            ),
-            (
-                "url_stats",
-                Pipeline(
-                    [
-                        ("stats", UrlStatsTransformer()),
-                        ("scale", StandardScaler(with_mean=False)),
-                    ]
-                ),
-            ),
-        ]
-    )
-
+def build_model(categorical_features: list[str]) -> Pipeline:
     return Pipeline(
         [
-            ("features", features),
-            ("classifier", SVC()),
+            ("preprocessor", build_preprocessor(categorical_features)),
+            (
+                "classifier",
+                LogisticRegression(
+                    max_iter=1000,
+                    solver="liblinear",
+                    random_state=RANDOM_STATE,
+                ),
+            ),
         ]
     )
 
 
-def train_and_optimize() -> dict:
-    df = load_url_spam_dataset(RAW_DATA_PATH)
+def train_model_and_recommender() -> dict:
+    df = load_adult_income_dataset(RAW_DATA_PATH)
+    feature_columns = get_feature_columns(df)
+    categorical_features = get_categorical_features(df)
+
     X_train, X_test, y_train, y_test = train_test_split(
-        df["url"],
-        df["is_spam"],
+        df[feature_columns],
+        df[TARGET],
         test_size=0.2,
         random_state=RANDOM_STATE,
-        stratify=df["is_spam"],
+        stratify=df[TARGET],
     )
 
     PROCESSED_DIR.mkdir(parents=True, exist_ok=True)
-    pd.DataFrame({"url": X_train, "is_spam": y_train}).to_csv(
-        PROCESSED_DIR / "train.csv", index=False
-    )
-    pd.DataFrame({"url": X_test, "is_spam": y_test}).to_csv(
-        PROCESSED_DIR / "test.csv", index=False
-    )
+    train_df = X_train.copy()
+    train_df[TARGET] = y_train
+    test_df = X_test.copy()
+    test_df[TARGET] = y_test
+    train_df.to_csv(PROCESSED_DIR / "train.csv", index=False)
+    test_df.to_csv(PROCESSED_DIR / "test.csv", index=False)
 
-    baseline_model = build_svm_pipeline()
+    baseline_model = build_model(categorical_features)
     baseline_model.fit(X_train, y_train)
-    baseline_predictions = baseline_model.predict(X_test)
-    baseline_metrics = classification_metrics(y_test, baseline_predictions)
+    baseline_pred = baseline_model.predict(X_test)
+    baseline_score = baseline_model.predict_proba(X_test)[:, 1]
+    baseline_metrics = evaluate_classifier(y_test, baseline_pred, baseline_score)
 
-    search_space = {
-        "features__tfidf__ngram_range": [(1, 1), (1, 2)],
-        "features__tfidf__min_df": [1, 2, 4],
-        "classifier__C": [0.5, 1, 3, 10],
-        "classifier__kernel": ["linear", "rbf"],
-        "classifier__gamma": ["scale", "auto"],
-        "classifier__class_weight": [None, "balanced"],
-    }
-    optimized_search = GridSearchCV(
-        estimator=build_svm_pipeline(),
-        param_grid=search_space,
-        scoring="f1",
+    search = GridSearchCV(
+        estimator=build_model(categorical_features),
+        param_grid={
+            "classifier__C": [0.3, 1.0, 3.0, 10.0],
+            "classifier__class_weight": [None, "balanced"],
+        },
+        scoring="roc_auc",
         cv=5,
         n_jobs=-1,
         verbose=1,
     )
-    optimized_search.fit(X_train, y_train)
+    search.fit(X_train, y_train)
 
-    optimized_model = optimized_search.best_estimator_
-    optimized_predictions = optimized_model.predict(X_test)
-    optimized_metrics = classification_metrics(y_test, optimized_predictions)
+    best_model = search.best_estimator_
+    optimized_pred = best_model.predict(X_test)
+    optimized_score = best_model.predict_proba(X_test)[:, 1]
+    optimized_metrics = evaluate_classifier(y_test, optimized_pred, optimized_score)
+
+    recommender = IncomeRecommendationSystem(
+        model=best_model,
+        training_data=train_df,
+        feature_columns=feature_columns,
+    )
+    sample_recommendations = {
+        name: recommender.recommend(profile).__dict__
+        for name, profile in simulated_profiles().items()
+    }
 
     MODEL_DIR.mkdir(parents=True, exist_ok=True)
-    joblib.dump(optimized_model, MODEL_PATH)
+    joblib.dump(
+        {
+            "model": best_model,
+            "recommender": recommender,
+            "feature_columns": feature_columns,
+            "target": TARGET,
+        },
+        MODEL_PATH,
+    )
 
     results = {
-        "dataset": {
-            "rows": int(df.shape[0]),
-            "unique_urls": int(df["url"].nunique()),
-            "spam": int(df["is_spam"].sum()),
-            "not_spam": int((~df["is_spam"]).sum()),
-            "train_rows": int(len(X_train)),
-            "test_rows": int(len(X_test)),
+        "problem_definition": {
+            "what_is_recommended": "Trayectorias accionables de educacion, ocupacion, tipo de trabajo y horas semanales.",
+            "user_definition": "Una persona adulta representada por su perfil demografico y socioeconomico.",
+            "profile_variables": feature_columns,
+            "approach": "Sistema hibrido: clasificador supervisado para estimar probabilidad de >50K y vecinos similares de alto ingreso para filtrado basado en contenido.",
         },
-        "baseline_svm_default_classifier": baseline_metrics,
-        "optimized_svm": {
-            "best_params": optimized_search.best_params_,
-            "best_cv_f1": optimized_search.best_score_,
+        "dataset": {
+            "rows_after_cleaning": int(df.shape[0]),
+            "columns": int(df.shape[1]),
+            "high_income": int(df[TARGET].sum()),
+            "low_income": int((~df[TARGET]).sum()),
+            "train_rows": int(X_train.shape[0]),
+            "test_rows": int(X_test.shape[0]),
+        },
+        "baseline_classifier": baseline_metrics,
+        "optimized_classifier": {
+            "best_params": search.best_params_,
+            "best_cv_roc_auc": search.best_score_,
             **optimized_metrics,
         },
         "artifacts": {
             "model_path": str(MODEL_PATH.relative_to(PROJECT_ROOT)),
             "metrics_path": str(METRICS_PATH.relative_to(PROJECT_ROOT)),
+            "recommendations_path": str(RECOMMENDATIONS_PATH.relative_to(PROJECT_ROOT)),
             "train_path": str((PROCESSED_DIR / "train.csv").relative_to(PROJECT_ROOT)),
             "test_path": str((PROCESSED_DIR / "test.csv").relative_to(PROJECT_ROOT)),
         },
     }
+
     write_json(results, METRICS_PATH)
+    write_json(sample_recommendations, RECOMMENDATIONS_PATH)
     return results
 
 
 def main() -> None:
-    results = train_and_optimize()
-    baseline = results["baseline_svm_default_classifier"]
-    optimized = results["optimized_svm"]
+    results = train_model_and_recommender()
+    baseline = results["baseline_classifier"]
+    optimized = results["optimized_classifier"]
 
-    print("URL spam detection training complete")
-    print(f"Dataset rows: {results['dataset']['rows']}")
+    print("Adult Income recommendation project complete")
+    print(f"Rows after cleaning: {results['dataset']['rows_after_cleaning']}")
     print(
-        "Baseline SVM - "
-        f"accuracy: {baseline['accuracy']:.3f}, spam F1: {baseline['f1_spam']:.3f}"
+        "Baseline classifier - "
+        f"accuracy: {baseline['accuracy']:.3f}, ROC AUC: {baseline['roc_auc']:.3f}"
     )
     print(
-        "Optimized SVM - "
-        f"accuracy: {optimized['accuracy']:.3f}, spam F1: {optimized['f1_spam']:.3f}"
+        "Optimized classifier - "
+        f"accuracy: {optimized['accuracy']:.3f}, ROC AUC: {optimized['roc_auc']:.3f}"
     )
     print(f"Best params: {optimized['best_params']}")
-    print(f"Saved model: {MODEL_PATH.relative_to(PROJECT_ROOT)}")
+    print(f"Saved model and recommender: {MODEL_PATH.relative_to(PROJECT_ROOT)}")
     print(f"Saved metrics: {METRICS_PATH.relative_to(PROJECT_ROOT)}")
+    print(f"Saved sample recommendations: {RECOMMENDATIONS_PATH.relative_to(PROJECT_ROOT)}")
 
 
 if __name__ == "__main__":

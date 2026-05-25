@@ -1,37 +1,61 @@
-# URL Spam Detection with NLP and SVM
+# Recommendation Systems - Your Future Through Data
 
-![URL Spam Detection project banner](assets/project-banner.png)
+![Project banner](assets/project-banner.png)
 
 **Language / Idioma:** English | [Español](README.es.md)
 
-This project classifies URLs as spam or not spam using only the link text. It implements the complete assignment workflow: data loading, URL preprocessing, train/test split, baseline SVM, hyperparameter optimization and model persistence.
+This project uses the **Adult Income Dataset** to train a supervised classifier that estimates whether an adult profile is likely to earn more than **50K USD per year**. The prediction layer feeds an interpretive recommender that suggests actionable education and career paths to improve the estimated probability.
 
-**Español:** Este proyecto detecta enlaces spam usando solamente la URL. Incluye carga de datos, preprocesamiento NLP, division train/test, SVM base, optimizacion de hiperparametros y guardado del modelo final.
+**Español:** Este proyecto usa el Adult Income Dataset para estimar si un perfil adulto podria superar los 50,000 USD anuales y recomendar trayectorias de educacion u ocupacion para mejorar esa probabilidad.
 
-## What the pipeline does
+## Goals
 
-1. Loads `data/raw/url_spam.csv`.
-2. Cleans duplicate rows and validates the required columns.
-3. Splits the dataset into stratified train and test files.
-4. Tokenizes URLs by punctuation and URL components.
-5. Removes stopwords and applies lightweight lemmatization.
-6. Builds TF-IDF text features and engineered URL statistics.
-7. Trains a default SVM baseline.
-8. Optimizes an SVM with `GridSearchCV`.
-9. Saves the best model and metrics under `models/`.
+- Explore census income data.
+- Clean null or malformed values such as `?`.
+- Transform categorical variables with One-Hot Encoding.
+- Normalize numerical variables.
+- Train a supervised classification model.
+- Define and build an interpretive recommendation system.
+- Test recommendations with simulated user profiles.
 
-## Project Structure
+## Recommendation Problem
+
+- **What is recommended:** actionable improvement paths, such as increasing education level, exploring high-income occupations, changing workclass and adjusting weekly hours.
+- **Who is the user:** an adult person represented by a demographic and socioeconomic profile.
+- **Profile variables:** age, education, occupation, marital status, relationship, hours per week, workclass, country, sex, race and capital variables.
+- **Approach:** hybrid recommender. It combines a supervised `>50K` probability model with content-based filtering using similar high-income profiles.
+
+## Workflow
+
+1. Load `data/raw/adult-census-income.csv`.
+2. Clean columns, duplicates and `?` values.
+3. Create binary target `income_high`.
+4. Build a stratified train/test split.
+5. Preprocess data:
+   - median imputation for numerical features;
+   - `StandardScaler` for numerical features;
+   - `Unknown` imputation for categorical features;
+   - `OneHotEncoder` for categorical features.
+6. Train a baseline classifier.
+7. Optimize it with `GridSearchCV`.
+8. Build the hybrid recommender.
+9. Test simulated user profiles.
+10. Save model and result artifacts.
+
+## Structure
 
 ```text
 .
+├── assets/project-banner.png
 ├── data/
-│   ├── raw/url_spam.csv
+│   ├── raw/adult-census-income.csv
 │   └── processed/
 │       ├── train.csv
 │       └── test.csv
 ├── models/
-│   ├── url_spam_svm_pipeline.joblib
-│   └── url_spam_svm_metrics.json
+│   ├── adult_income_recommender.joblib
+│   ├── adult_income_metrics.json
+│   └── sample_recommendations.json
 ├── src/
 │   ├── app.py
 │   ├── explore.ipynb
@@ -61,19 +85,15 @@ pip install -r requirements.txt
 python src/app.py
 ```
 
-The model artifact is saved to:
+The script creates:
 
-```text
-models/url_spam_svm_pipeline.joblib
-```
+- `data/processed/train.csv`
+- `data/processed/test.csv`
+- `models/adult_income_recommender.joblib`
+- `models/adult_income_metrics.json`
+- `models/sample_recommendations.json`
 
-The full evaluation report is saved to:
-
-```text
-models/url_spam_svm_metrics.json
-```
-
-## Predict with the Saved Model
+## Use the Recommender
 
 ```python
 import joblib
@@ -81,9 +101,27 @@ import sys
 
 sys.path.append("src")
 
-model = joblib.load("models/url_spam_svm_pipeline.joblib")
-prediction = model.predict(["https://briefingday.us8.list-manage.com/unsubscribe"])
-print(bool(prediction[0]))
-```
+artifact = joblib.load("models/adult_income_recommender.joblib")
+recommender = artifact["recommender"]
 
-`True` means spam and `False` means not spam.
+user_profile = {
+    "age": 25,
+    "workclass": "Private",
+    "fnlwgt": 180000,
+    "education": "HS-grad",
+    "education_num": 9,
+    "marital_status": "Never-married",
+    "occupation": "Adm-clerical",
+    "relationship": "Not-in-family",
+    "race": "White",
+    "sex": "Female",
+    "capital_gain": 0,
+    "capital_loss": 0,
+    "hours_per_week": 25,
+    "native_country": "United-States",
+}
+
+result = recommender.recommend(user_profile)
+print(result.base_probability)
+print(result.recommendations)
+```
